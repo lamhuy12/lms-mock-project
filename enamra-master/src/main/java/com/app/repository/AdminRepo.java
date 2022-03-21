@@ -1,0 +1,27 @@
+package com.app.repository;
+
+import com.app.model.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository("adminRepo")
+public interface AdminRepo extends JpaRepository<User,Long> {
+
+    @Query(value = "select *  from user u inner join user_role ur on(u.id=ur.user_id) " +
+            "inner join role r on(ur.role_id=r.role_id) where r.role='ADMIN'", nativeQuery = true)
+    List<User> findAllAdmins();
+
+
+    @Query(value = "select *  from user u inner join user_role ur on(u.id=ur.user_id) " +
+            "inner join role r on(ur.role_id=r.role_id) where r.role='TEACHER'", nativeQuery = true)
+    List<User> findAllTeachers();
+
+
+    @Query(value = "select *  from user u inner join user_role ur on(u.id=ur.user_id) " +
+            "inner join role r on(ur.role_id=r.role_id) where r.role='STUDENT'", nativeQuery = true)
+    List<User> findAllStudents();
+}
